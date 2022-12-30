@@ -409,7 +409,7 @@ public class SmartScheduler {
             Intent intent = new Intent(mContext, SmartSchedulerAlarmReceiver.class);
             intent.putExtras(bundle);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, job.getJobId(), intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
+                    returnPendingIntentFlags());
 
             Calendar calendar = Calendar.getInstance();
 
@@ -443,6 +443,10 @@ public class SmartScheduler {
             Log.e(TAG, "Exception occurred while addAlarmJob: " + e);
             return false;
         }
+    }
+
+    private int returnPendingIntentFlags() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ? PendingIntent.FLAG_IMMUTABLE : PendingIntent.FLAG_UPDATE_CURRENT;
     }
 
     // Methods to remove jobs
